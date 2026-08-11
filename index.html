@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+// Godot's PWA service worker caches aggressively, which is correct for players and wrong for
+// testers: an iPad will happily serve last week's build forever. Purging on the index means
+// following a link from here always lands on what was actually published.
+(async function () {
+	try {
+		if ("serviceWorker" in navigator) {
+			for (const r of await navigator.serviceWorker.getRegistrations()) await r.unregister();
+		}
+		if ("caches" in window) {
+			for (const k of await caches.keys()) await caches.delete(k);
+		}
+	} catch (e) {
+		console.warn("Cache cleanup failed:", e);
+	}
+})();
+</script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>First Matter — Playtests</title>
+	<style>
+		* { box-sizing: border-box; }
+		body {
+			min-height: 100vh; margin: 0; padding: 40px 20px;
+			display: flex; justify-content: center;
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+			color: #e8ecf5; background: #04060c;
+		}
+		main { width: 100%; max-width: 720px; }
+		h1 { margin-bottom: 6px; font-size: 1.9rem; }
+		.subtitle { margin-top: 0; margin-bottom: 28px; color: #8f9bb3; }
+		.card {
+			margin-bottom: 18px; padding: 22px;
+			border: 1px solid #24304a; border-radius: 14px; background: #0b1220;
+		}
+		.card h2 { margin: 0 0 6px; font-size: 1.15rem; }
+		.card p { margin: 0 0 14px; color: #9aa7bf; font-size: 0.95rem; }
+		a.play {
+			display: inline-block; padding: 11px 20px; border-radius: 10px;
+			background: #2f6df6; color: white; text-decoration: none; font-weight: 600;
+		}
+		a.play:hover { background: #4680ff; }
+		ul { padding-left: 20px; color: #9aa7bf; line-height: 1.9; }
+		ul a { color: #7fa7ff; }
+		.note { font-size: 0.85rem; color: #6d7a92; line-height: 1.6; }
+		code { background: #131c2e; padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+	</style>
+</head>
+<body>
+<main>
+	<h1>First Matter</h1>
+	<p class="subtitle">Playtest builds. Landscape, touch or mouse.</p>
+
+	<div class="card">
+		<h2>Latest build</h2>
+		<p>Assemble matter from quarks. Touch a particle to warm it, flick warm particles
+		together to forge a proton, then guide an electron into orbit before the window closes.</p>
+		<a class="play" href="./latest/">Play</a>
+	</div>
+
+	<div class="card">
+		<h2>On an iPad or phone</h2>
+		<p>Open the link, then <strong>Share → Add to Home Screen</strong>. It runs fullscreen
+		in landscape with no browser chrome, and loads faster after the first time.</p>
+		<p class="note">First load is around 40&nbsp;MB, so use wifi. If a build looks stale,
+		come back to this page — it clears the cache on load.</p>
+	</div>
+
+	<div class="card">
+		<h2>Controls</h2>
+		<p class="note">
+			<strong>Tap</strong> a particle to warm it · <strong>Swipe through</strong> it to flick ·
+			<strong>Pinch together</strong> to survey the sector, release to spring back ·
+			<strong>Two-finger tap</strong> to pin the survey view.<br>
+			On a keyboard: <code>Tab</code> survey · <code>P</code> pin · <code>S</code> slingshot ·
+			<code>Z</code> zen · <code>X</code> sandbox · <code>[</code> <code>]</code> time ·
+			<code>R</code> restart · <code>F3</code> debug overlay.
+		</p>
+	</div>
+
+	<div class="card">
+		<h2>All builds</h2>
+		<ul><li><a href="./first-matter-2026-08-11/">first-matter-2026-08-11</a></li></ul>
+	</div>
+
+	<p class="note">Source is private. This site hosts compiled builds only.</p>
+</main>
+</body>
+</html>
