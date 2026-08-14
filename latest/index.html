@@ -92,7 +92,7 @@ body {
 		</style>
 		<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
 <link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
-
+<script>/* Browsers create every AudioContext suspended and Godot 4.7 web never resumes it, so the build is silent forever. Hook the constructor before the engine boots, then resume on the first real gesture. window.__gdAudio is left exposed on purpose: it is the only way to check from outside whether a deployed build actually has sound. */(function(){var O=window.AudioContext||window.webkitAudioContext;if(!O){return}var s={contexts:[],resumes:0};window.__gdAudio=s;function P(o){var c=new O(o);s.contexts.push(c);return c}P.prototype=O.prototype;Object.setPrototypeOf(P,O);window.AudioContext=P;window.webkitAudioContext=P;function r(){for(var i=0;i<s.contexts.length;i++){if(s.contexts[i].state!=='running'){s.resumes++;s.contexts[i].resume()}}}['pointerdown','mousedown','touchstart','keydown'].forEach(function(e){window.addEventListener(e,r,{capture:true})})})();</script>
 	</head>
 	<body>
 		<canvas id="canvas">
